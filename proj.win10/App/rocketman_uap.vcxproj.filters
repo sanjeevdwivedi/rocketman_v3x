@@ -43,7 +43,7 @@
     <ClCompile Include="..\..\Classes\AppDelegate.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Classes\HelloWorldScene.cpp">
+    <ClCompile Include="..\..\Classes\MainLayer.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,7 +60,10 @@
     <ClInclude Include="..\..\Classes\AppDelegate.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Classes\HelloWorldScene.h">
+    <ClInclude Include="..\..\Classes\GameConfig.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\MainLayer.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
