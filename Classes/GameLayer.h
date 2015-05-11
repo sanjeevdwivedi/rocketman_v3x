@@ -62,7 +62,7 @@ private:
 	void _jump();
 	void _resetBonus();
 	void _superJump();
-
+	void _showHighScores();
 	void _initJetPackAnimation();
 
 	void onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *event);

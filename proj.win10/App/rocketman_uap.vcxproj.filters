@@ -49,6 +49,9 @@
     <ClCompile Include="..\..\Classes\GameLayer.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\HighScoreLayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -70,6 +73,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\GameLayer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\HighScoreLayer.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

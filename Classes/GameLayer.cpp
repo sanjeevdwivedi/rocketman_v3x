@@ -10,6 +10,7 @@
 
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
+#include "HighScoreLayer.h"
 
 using namespace cocos2d;
 
@@ -205,6 +206,7 @@ void GameLayer::update(float dt)
 		if (pHealthBar->getPercentage() <= 0)
 		{
 			// TODO: show high scores
+			_showHighScores();
 		}
 	}
 
@@ -300,6 +302,7 @@ void GameLayer::update(float dt)
 			if (rm_position.y < -rm_size.height)
 			{
 				// TODO: (exit the game here)
+				_showHighScores();
 			}
 		}
 
@@ -358,6 +361,18 @@ void GameLayer::update(float dt)
 	//// draw RocketMan at its new position
 	rocketMan->setPosition(rm_position);
 }
+
+
+void GameLayer::_showHighScores()
+{
+	gameSuspended = true;
+	stopAllActions();
+	unscheduleUpdate();
+
+	TransitionFade* scene = TransitionFade::create(1.0f, HighScoreLayer::scene(score), Color3B::WHITE);
+	Director::getInstance()->replaceScene(scene);
+}
+
 
 void GameLayer::_resetBonus()
 {
