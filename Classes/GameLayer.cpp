@@ -105,7 +105,7 @@ void GameLayer::_startGame()
 void GameLayer::_resetRocketMan()
 {
 	rm_position.x = SCREEN_WIDTH * 0.5f;
-	rm_position.y = SCREEN_HEIGHT * 0.5f;
+	rm_position.y = SCREEN_WIDTH * 0.5f;
 	rocketMan->setPosition(rm_position);
 
 	rm_velocity.x = 0;
@@ -163,16 +163,42 @@ void GameLayer::update(float dt)
 		rm_position.y = SCREEN_HEIGHT * 0.5f;
 	}
 
-	// temporarily make the Rocketman go to the top
-	if (rm_position.y < 0)
+	int platformTag;
+	if (rm_velocity.y < 0)
 	{
-		rm_position.y = SCREEN_HEIGHT;
-		rm_velocity.y = 0;
+		for (platformTag = kPlatformsStartTag; platformTag < kPlatformsStartTag + K_NUM_PLATFORMS; platformTag++)
+		{
+			Sprite* platform = dynamic_cast<Sprite*>(this->getChildByTag(platformTag));
+			Size platform_size = platform->getContentSize();
+			Point platform_position = platform->getPosition();
+
+			max_x = platform_position.x - platform_size.width * 0.5f - 10;
+			min_x = platform_position.x + platform_size.width * 0.5f + 10;
+			float min_y = platform_position.y + (platform_size.height + rm_size.height) * 0.5f - K_PLATFORM_TOP_PADDING;
+
+			// check if RocketMan and the platform is colliding, if so, make the Rocketman jump
+			if (rm_position.x > max_x && rm_position.x < min_x &&
+				rm_position.y > platform_position.y && rm_position.y < min_y)
+				_jump();
+		}
+
 	}
 
 	//// draw RocketMan at its new position
 	rocketMan->setPosition(rm_position);
 }
+
+
+// when RocketMan is jumping, this is  its velocity
+void GameLayer::_jump()
+{
+	// play sound effect when player jumps
+#if K_PLAY_SOUND_EFFECTS
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Sounds/jump.wav");
+#endif
+	rm_velocity.y = 350.0f + fabsf(rm_velocity.x);
+}
+
 
 void GameLayer::_initPlatform()
 {
