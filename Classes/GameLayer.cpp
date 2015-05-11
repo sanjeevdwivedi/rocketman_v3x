@@ -35,6 +35,11 @@ GameLayer::GameLayer()
     rocketMan->runAction(jetpackAnimation);
     this->addChild(rocketMan, 4, kRocketMan);
 
+	// This is to create the score
+	LabelBMFont* scoreLabel = LabelBMFont::create("0", "bitmapFont.fnt");
+	addChild(scoreLabel, 5, kScoreLabel);
+	scoreLabel->setPosition(ccp(160, 430));
+
     _startGame();
 
 	// run the update loop
@@ -97,6 +102,7 @@ GameLayer::~GameLayer()
 
 void GameLayer::_startGame()
 {
+	score = 0;
 	_resetPlatforms();
     _resetRocketMan();
 }
@@ -209,6 +215,11 @@ void GameLayer::update(float dt)
 				platform->setPosition(position);
 			}
 		}
+
+		score += (int)delta;
+		__String* scoreStr = __String::createWithFormat("%d", score);
+		LabelBMFont* scoreLabel = dynamic_cast<LabelBMFont*>(getChildByTag(kScoreLabel));
+		scoreLabel->setString(scoreStr->getCString());
 	}
 
 	//// draw RocketMan at its new position

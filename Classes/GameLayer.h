@@ -39,6 +39,7 @@ private:
 	int currentBonusType;
 	int currentBonusPlatformIndex;
 	bool rm_lookingRight;
+	int score;
 
 	Sprite *rocketMan;
 	Animate *jetpackAnimation;
