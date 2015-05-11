@@ -37,6 +37,17 @@ GameLayer::GameLayer()
 
     _startGame();
 
+	// run the update loop
+	scheduleUpdate();
+
+	// We don't want touch interaction
+	setTouchEnabled(false);
+
+	//setAccelerometerEnabled(true);
+	Device::setAccelerometerEnabled(true);
+	auto listener = EventListenerAcceleration::create(CC_CALLBACK_2(GameLayer::onAcceleration, this));
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
 #if K_PLAY_BACKGROUND_MUSIC
 	// play and loop background music during game
 	auto soundEngine = CocosDenshion::SimpleAudioEngine::sharedEngine();
@@ -45,6 +56,18 @@ GameLayer::GameLayer()
 #endif
 }
 
+void GameLayer::onAcceleration(cocos2d::Acceleration *pAccelerationValue, cocos2d::Event *event)
+{
+	if (gameSuspended)
+		return;
+
+	// RocketMan's acceleration, left and right
+	float accel_filter = 0.1f;
+
+	// bug in Cocos2d-x, on this device it is inverting the axes and directions
+	//rm_velocity.x = rm_velocity.x * accel_filter + pAccelerationValue->x * (1.0f - accel_filter) * 500.0f;
+	rm_velocity.x = rm_velocity.x * accel_filter + -1*pAccelerationValue->y * (1.0f - accel_filter) * 500.0f;
+}
 
 void GameLayer::_initJetPackAnimation()
 {
@@ -81,15 +104,30 @@ void GameLayer::_startGame()
 // RocketMan logic
 void GameLayer::_resetRocketMan()
 {
-    rm_position.x = SCREEN_WIDTH * 0.5f;
-    rm_position.y = SCREEN_HEIGHT * 0.5f;
-    rocketMan->setPosition(rm_position);
+	rm_position.x = SCREEN_WIDTH * 0.5f;
+	rm_position.y = SCREEN_HEIGHT * 0.5f;
+	rocketMan->setPosition(rm_position);
+
+	rm_velocity.x = 0;
+	rm_velocity.y = 0;
+
+	rm_acceleration.x = 0;
+
+	//rm_acceleration.y = -550.0f;
+
+	rm_lookingRight = true;
+	rocketMan->setScaleX(1.0f);
 }
 
 
 void GameLayer::update(float dt)
 {
-    
+	if (rm_position.x <= 0) rm_position.x = 0;
+	if (rm_position.x >= 320) rm_position.x = 320;
+
+	//// draw RocketMan at its new position
+	rm_position.x += rm_velocity.x * dt;
+	rocketMan->setPosition(rm_position);
 }
 
 void GameLayer::_initPlatform()

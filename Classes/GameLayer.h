@@ -28,14 +28,17 @@ public:
     static cocos2d::Scene* scene();
 
 private:
-    cocos2d::Point rm_position;
-    
+    Point rm_position;
+	Vec2  rm_velocity;
+	Vec2  rm_acceleration;
+
 	int currentPlatformTag;
 	int platformCount;
 	float currentPlatformY;
 	float currentMaxPlatformStep;
 	int currentBonusType;
 	int currentBonusPlatformIndex;
+	bool rm_lookingRight;
 
 	Sprite *rocketMan;
 	Animate *jetpackAnimation;
@@ -52,6 +55,8 @@ private:
 	
 
 	void _initJetPackAnimation();
+
+	void onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *event);
 };
 
 #endif /* defined(__RocketManCocos2dx__GameLayer__) */
