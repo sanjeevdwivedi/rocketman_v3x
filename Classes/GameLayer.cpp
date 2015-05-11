@@ -154,15 +154,6 @@ void GameLayer::update(float dt)
 	rm_velocity.y += rm_acceleration.y * dt;
 	rm_position.y += rm_velocity.y * dt;
 
-	if (rm_position.y > SCREEN_HEIGHT * 0.5f)
-	{
-		// If the rocketman is going past half the screen, we move the platforms down
-		// and add new platforms at the top to make it feel like the rocketman is moving up
-		// Obviously, the platforms cannot go down, can they :)
-		float delta = rm_position.y - SCREEN_HEIGHT * 0.5f;
-		rm_position.y = SCREEN_HEIGHT * 0.5f;
-	}
-
 	int platformTag;
 	if (rm_velocity.y < 0)
 	{
@@ -180,8 +171,44 @@ void GameLayer::update(float dt)
 			if (rm_position.x > max_x && rm_position.x < min_x &&
 				rm_position.y > platform_position.y && rm_position.y < min_y)
 				_jump();
+
+
+			if (rm_position.y < -rm_size.height)
+			{
+				// TODO: (exit the game here)
+			}
 		}
 
+	}
+	else if (rm_position.y > SCREEN_HEIGHT * 0.5f)
+	{
+		// If the rocketman is going past half the screen, we move the platforms down
+		// and add new platforms at the top to make it feel like the rocketman is moving up
+		// Obviously, the platforms cannot go down, can they :)
+		float delta = rm_position.y - SCREEN_HEIGHT * 0.5f;
+		rm_position.y = SCREEN_HEIGHT * 0.5f;
+		currentPlatformY -= delta;
+
+		for (platformTag = kPlatformsStartTag; platformTag < kPlatformsStartTag + K_NUM_PLATFORMS; platformTag++)
+		{
+			Sprite* platform = dynamic_cast<Sprite*>(this->getChildByTag(platformTag));
+
+
+			Point position = platform->getPosition();
+			position = ccp(position.x, position.y - delta);
+
+			// If the platform just became invisible, reset it to just above the screen
+			if (position.y < -platform->getContentSize().height * 0.5f)
+			{
+				currentPlatformTag = platformTag;
+				_resetPlatform();
+			}
+			else
+			{
+				// If the platform is still visible, decrease its Y coordinates so it looks like the scene is scrolling
+				platform->setPosition(position);
+			}
+		}
 	}
 
 	//// draw RocketMan at its new position
