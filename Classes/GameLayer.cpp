@@ -35,6 +35,22 @@ GameLayer::GameLayer()
     rocketMan->runAction(jetpackAnimation);
     this->addChild(rocketMan, 4, kRocketMan);
 
+	Size landscapeSize = Director::getInstance()->getVisibleSize();
+	Size visibleSize = Size(landscapeSize.width, landscapeSize.height);
+	Point origin = Director::getInstance()->getVisibleOrigin();
+
+	// Add the healthbar and initialize it to be 100
+	pHealthSprite = Sprite::createWithSpriteFrameName("health_bar.png");
+	pHealthSprite->setAnchorPoint(ccp(0.0, 0.0));
+	pHealthBar = ProgressTimer::create(pHealthSprite);
+	pHealthBar->setScale(0.5, 0.5);
+	pHealthBar->setType(kCCProgressTimerTypeBar);
+	pHealthBar->setBarChangeRate(Vec2(1, 0));
+	pHealthBar->setPercentage(100);
+	pHealthBar->setPosition(Vec2(origin.x + 10, visibleSize.height - 20));
+	this->reorderChild(pHealthBar, 100);
+	this->addChild(pHealthBar);
+
 	// This is to create the score
 	LabelBMFont* scoreLabel = LabelBMFont::create("0", "bitmapFont.fnt");
 	addChild(scoreLabel, 5, kScoreLabel);
@@ -159,6 +175,21 @@ void GameLayer::update(float dt)
 
 	rm_velocity.y += rm_acceleration.y * dt;
 	rm_position.y += rm_velocity.y * dt;
+
+
+	// Just set it so that every 20 frames, we decrease the percentage by 1
+	// when the percentage goes below zero, the healthbar is finished and finish the game
+	// We should show some animation that the health is over.
+	fuelInTank--;
+	if (fuelInTank % 20 == 0)
+	{
+		pHealthBar->setPercentage(pHealthBar->getPercentage() - 1.0);
+		if (pHealthBar->getPercentage() <= 0)
+		{
+			// TODO: show high scores
+		}
+	}
+
 
 	int platformTag;
 	if (rm_velocity.y < 0)

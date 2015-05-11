@@ -40,7 +40,10 @@ private:
 	int currentBonusPlatformIndex;
 	bool rm_lookingRight;
 	int score;
+	int fuelInTank;
 
+	Sprite *pHealthSprite;
+	ProgressTimer *pHealthBar;
 	Sprite *rocketMan;
 	Animate *jetpackAnimation;
 
