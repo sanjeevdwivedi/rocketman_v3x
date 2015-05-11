@@ -46,6 +46,10 @@ private:
 	ProgressTimer *pHealthBar;
 	Sprite *rocketMan;
 	Animate *jetpackAnimation;
+	Sprite *bonus5;
+	Sprite *bonus10;
+	Sprite *bonus50;
+	Sprite *bonus100;
 
 	bool gameSuspended;
 
@@ -56,7 +60,8 @@ private:
     void _startGame();
     void _resetRocketMan();
 	void _jump();
-	
+	void _resetBonus();
+	void _superJump();
 
 	void _initJetPackAnimation();
 
