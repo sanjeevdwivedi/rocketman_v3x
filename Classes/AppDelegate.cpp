@@ -1,7 +1,11 @@
+//  Sanjeev Dwivedi: Updated to v3.6-Windows 10 Universal on 5/10/15
+
 #include "AppDelegate.h"
 #include "MainLayer.h"
 #include "GameConfig.h"
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {

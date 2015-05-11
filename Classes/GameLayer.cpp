@@ -2,12 +2,14 @@
 //  GameLayer.cpp
 //  RocketManCocos2dx
 //
+//  Sanjeev Dwivedi: Updated to v3.6-Windows 10 Universal on 5/10/15
 //  Modified by Sanjeev Dwivedi, Dale Stammen and Eric Mitelette
 //  Created by Carlos Pinan on 13/10/13.
 //
 //
 
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -30,6 +32,12 @@ GameLayer::GameLayer()
 
     _startGame();
 
+#if K_PLAY_BACKGROUND_MUSIC
+	// play and loop background music during game
+	auto soundEngine = CocosDenshion::SimpleAudioEngine::sharedEngine();
+	soundEngine->playBackgroundMusic("Sounds/background.wav", true);
+	soundEngine->setBackgroundMusicVolume(K_PLAY_BACKGROUND_MUSIC_VOLUME);
+#endif
 }
 
 
@@ -54,6 +62,8 @@ void GameLayer::_initJetPackAnimation()
 
 GameLayer::~GameLayer()
 {
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->stopAllEffects();
 }
 
 
