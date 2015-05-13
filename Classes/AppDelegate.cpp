@@ -63,7 +63,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HighScoreLayer::scene(0);
+    //auto scene = HighScoreLayer::scene(0);
+	auto scene = GameLayer::scene();
 
     // run
     director->runWithScene(scene);

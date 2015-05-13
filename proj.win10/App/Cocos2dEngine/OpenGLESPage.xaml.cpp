@@ -63,6 +63,12 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
     window->VisibilityChanged +=
         ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::VisibilityChangedEventArgs^>(this, &OpenGLESPage::OnVisibilityChanged);
 
+	window->KeyDown += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyPressed);
+
+	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyReleased);
+
+	window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &OpenGLESPage::OnCharacterReceived);
+
     swapChainPanel->SizeChanged +=
         ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
 
@@ -116,7 +122,7 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
         m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerMoved);
         m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerReleased);
 
-        // Begin processing input messages as they're delivered.
+		// Begin processing input messages as they're delivered.
         m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
     });
 
@@ -160,6 +166,38 @@ void OpenGLESPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
         m_renderer->QueuePointerEvent(PointerEventType::PointerReleased, e);
     }
 }
+
+void OpenGLESPage::OnKeyPressed(CoreWindow^ sender, KeyEventArgs^ e)
+{
+	if (!e->KeyStatus.WasKeyDown)
+	{
+		//log("OpenGLESPage::OnKeyPressed %d", e->VirtualKey);
+		if (m_renderer)
+		{
+			m_renderer->QueueKeyboardEvent(WinRTKeyboardEventType::KeyPressed, e);
+		}
+	}
+}
+
+void OpenGLESPage::OnCharacterReceived(CoreWindow^ sender, CharacterReceivedEventArgs^ e)
+{
+#if 0
+	if (!e->KeyStatus.WasKeyDown)
+	{
+		log("OpenGLESPage::OnCharacterReceived %d", e->KeyCode);
+	}
+#endif
+}
+
+void OpenGLESPage::OnKeyReleased(CoreWindow^ sender, KeyEventArgs^ e)
+{
+	//log("OpenGLESPage::OnKeyReleased %d", e->VirtualKey);
+	if (m_renderer)
+	{
+		m_renderer->QueueKeyboardEvent(WinRTKeyboardEventType::KeyReleased, e);
+	}
+}
+
 
 void OpenGLESPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 {

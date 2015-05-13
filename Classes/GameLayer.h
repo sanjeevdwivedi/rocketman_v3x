@@ -65,6 +65,9 @@ private:
 	void _showHighScores();
 	void _initJetPackAnimation();
 
+	virtual void onClickBegan(cocos2d::EventKeyboard::KeyCode key, Event* event);
+	virtual void onClickEnded(cocos2d::EventKeyboard::KeyCode key, Event* event);
+
 	void onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *event);
 };
 
