@@ -1,7 +1,7 @@
 # rocketman_v3x
 Rocketman Game Ported to v3.x and with Win10 support
 
-The Rocketman_v3x is a Cocos2d-x v3.x port of the previous game that I used in an an MVA (https://github.com/sanjeevdwivedi/rocket-man-game)
+The Rocketman_v3x is a Cocos2d-x v3.x port of the previous game that I used in an MVA (https://github.com/sanjeevdwivedi/rocket-man-game)
 The game has been updated to:
 
 - Work against v3 APIs
